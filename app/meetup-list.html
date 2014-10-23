@@ -1,0 +1,51 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/font-roboto/roboto.html">
+<link rel="import" href="../components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../components/paper-fab/paper-fab.html">
+<link rel="import" href="../components/paper-ripple/paper-ripple.html">
+<link rel="import" href="meetup-service.html">
+
+<polymer-element name="meetup-list" >
+  <template>
+    <style>
+    :host {
+      font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+      display: block;
+      width: 100%;
+    }
+    .attendeecard{
+      width: 150px;
+      height: 150px;
+      margin:20px;
+    }
+    h3{     
+      font-family: Roboto;
+      font-weight: 100;
+      font-size: 1.4em;
+    }
+    img{
+      max-width: 100px;
+      max-height: 100px;
+    }
+    </style>
+
+    <meetup-service id="meetup-service" attendees="{{attendees}}"></meetup-service>
+
+    <div horizontal  layout wrap>
+      <template repeat="{{membr in attendees}}">
+        <div class="attendeecard" layout center vertical>
+        <paper-shadow z="3" fit></paper-shadow>
+        
+        <img src="{{membr.member.photo.thumb}}"/>
+        <h3>{{membr.member.name}}</h3>
+        </div>
+        </paper-ripple>
+      </template>
+    </div>
+  </template>
+
+  <script>
+  Polymer({
+  });
+  </script>
+</polymer-element>

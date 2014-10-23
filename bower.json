@@ -1,0 +1,27 @@
+{
+  "name": "random-picker-jobber",
+  "version": "0.0.0",
+  "authors": [
+    "Lloyd Cledwyn <cledwyn@gmail.com>"
+  ],
+  "description": "Random Picker from a feed",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "components",
+    "test",
+    "tests"
+  ],
+   "dependencies": {
+    "polymer": "Polymer/polymer#0.4.2",
+    "core-elements": "Polymer/core-elements#0.4.2",
+    "paper-elements": "Polymer/paper-elements#0.4.2",
+    "paper-fab": "Polymer/paper-fab#0.4.2",
+    "font-roboto": "Polymer/font-roboto#0.4.2",
+    "core-icons": "Polymer/core-icons#0.4.2",
+    "polymer-jsonp": "Polymer/polymer-jsonp#~0.3.0",
+    "core-animated-pages":"Polymer/core-animated-pages#0.4.2"
+  }
+}

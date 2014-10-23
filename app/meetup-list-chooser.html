@@ -1,0 +1,74 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/font-roboto/roboto.html">
+<link rel="import" href="../components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../components/paper-fab/paper-fab.html">
+<link rel="import" href="../components/paper-button/paper-button.html" >
+ <link rel="import" href="meetup-service.html">
+
+<polymer-element name="meetup-list-chooser" >
+  <template>
+    <style>
+    :host {
+      font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+      display: block;
+      width: 100%;
+    }
+    .attendeecard{
+      width: 150px;
+      height: 150px;
+      margin:20px;
+    }
+    h3{     
+      font-family: Roboto;
+      font-weight: 100;
+      font-size: 1.4em;
+    }
+    img{
+      max-width: 100px;
+      max-height: 100px;
+    }
+    </style>
+
+    <meetup-service id="meetupservice" attendees="{{attendees}}"></meetup-service>
+
+    <paper-button raised on-click="{{startJobber}}">Start</paper-button>
+
+    <div horizontal  layout wrap>
+      <template repeat="{{membr in attendees}}">
+
+        <div id="member{{membr.member.id}}" class="attendeecard"  layout center vertical>
+        <paper-ripple fit></paper-ripple>
+        <paper-shadow z="3" fit></paper-shadow>
+        <div style="height:100%; width:100%; background-color:{{membr.bgcolorval}}" layout center vertical>
+        <img src="{{membr.member.photo.thumb}}"/>
+        <h3>{{membr.member.name}}</h3>
+        </div>
+        </div>
+      </template>
+    </div>
+  </template>
+
+  <script>
+
+  function pastelColors(){
+    var r = (Math.round(Math.random()* 127) + 127).toString(16);
+    var g = (Math.round(Math.random()* 127) + 127).toString(16);
+    var b = (Math.round(Math.random()* 127) + 127).toString(16);
+    return '#' + r + g + b;
+}
+
+  Polymer('meetup-list-chooser', {
+    created: function() {
+      this.attendees = [];
+    },
+    ready: function() {
+       this.attendees = this.$.meetupservice.attendees;
+    },
+    startJobber: function(){
+      this.attendees.forEach(function(mem){
+        mem.bgcolorval = pastelColors();
+      });
+    }
+  });
+  </script>
+</polymer-element>

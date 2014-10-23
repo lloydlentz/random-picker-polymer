@@ -1,0 +1,47 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+<link rel="import" href="../components/polymer-jsonp/polymer-jsonp.html">
+<link rel="import" href="../app-config.html">
+<polymer-element name="meetup-service" attributes="attendees">
+  <template>
+    <app-config id="globals"></app-config>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+    <polymer-jsonp
+      auto
+      id="jsonp"
+      url="{{baseAPIurl}}{{meetupEventId}}&callback="
+      on-polymer-response="{{organizersLoaded}}"
+    ></polymer-jsonp>
+  </template>
+   <script>
+    document.addEventListener('polymer-ready', function() {
+
+    });
+  </script>
+  <script>
+  Polymer('meetup-service', {
+    created: function() {
+      this.attendees = [];
+    },
+    ready: function() {
+      this.meetupEventId = this.$.globals.values.meetupEventId;
+      this.baseAPIurl = this.$.globals.values.meetupAPIurl;
+      var jsonp = this.$.jsonp;
+      jsonp.addEventListener("polymer-response",
+        function(e) {
+          this.attendees = e.detail.response.attendees;
+        }
+      );
+    },
+    organizersLoaded: function() {
+      // Make a copy of the loaded data
+
+      this.attendees = this.$.jsonp.response;
+    }
+  });
+  </script>
+</polymer-element>

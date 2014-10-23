@@ -1,0 +1,32 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="app-globals.html">
+
+<polymer-element name="gplus-image" attributes="userid size apiKey">
+
+<template>
+  <app-globals id="globals"></app-globals>
+  <core-ajax id="ajax"      
+      url="https://www.googleapis.com/plus/v1/people/{{userid}}?fields=image&key={{apiKey}}"
+      on-core-response="{{gplusLoaded}}"
+      handleAs="json">
+    </core-ajax>
+    <a href="https://plus.google.com/{{userid}}" target="_new"><img src="{{imgSrc}}"/></a>
+</template>
+
+    <script>
+        Polymer('gplus-image', {
+            size: '120',
+            imgSrc : '',
+            ready: function() {
+              this.apiKey=this.$.globals.values.apiKey;
+              this.$.ajax.go();
+            },
+            gplusLoaded: function(){
+              this.person = this.$.ajax.response;
+              this.imgSrc = this.person.image.url;
+            }
+
+        });
+    </script>
+
+</polymer-element>

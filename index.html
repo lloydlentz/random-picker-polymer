@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <script src="components/platform/platform.js"></script>
+
+  <link rel="import" href="components/paper-checkbox/paper-checkbox.html">
+  <link rel="import" href="components/font-roboto/roboto.html">
+  <link rel="import" href="app/organizer-list.html">
+  <link rel="import" href="app/meetup-list.html">
+  <link rel="import" href="app/meetup-list-chooser.html">
+  <link rel="import" href="app/app-globals.html">
+
+  <style shim-shadowdom>
+    body {
+      font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+      margin: 0;
+      padding: 24px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+      -webkit-touch-callout: none;
+  }
+
+  </style>
+
+</head>
+<body unresolved>
+    <div class="container" horizontal layout wrap>
+    <meetup-list-chooser show="all"></meetup-list-chooser>
+
+  </div>
+
+
+</body>
+</html>
