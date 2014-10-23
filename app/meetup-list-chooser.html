@@ -68,6 +68,10 @@
       this.attendees.forEach(function(mem){
         mem.bgcolorval = pastelColors();
       });
+      this.async(function() {
+        this.startJobber();
+      }, null, 200);
+
     }
   });
   </script>
