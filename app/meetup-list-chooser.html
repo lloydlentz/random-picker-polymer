@@ -1,32 +1,32 @@
 <link rel="import" href="../components/polymer/polymer.html">
 <link rel="import" href="../components/font-roboto/roboto.html">
-<link rel="import" href="../components/paper-shadow/paper-shadow.html">
 <link rel="import" href="../components/paper-fab/paper-fab.html">
+<link rel="import" href="../components/paper-shadow/paper-shadow.html">
 <link rel="import" href="../components/paper-button/paper-button.html" >
- <link rel="import" href="meetup-service.html">
+<link rel="import" href="meetup-service.html">
 
 <polymer-element name="meetup-list-chooser" >
   <template>
     <style>
-    :host {
-      font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
-      display: block;
-      width: 100%;
-    }
-    .attendeecard{
-      width: 150px;
-      height: 150px;
-      margin:20px;
-    }
-    h3{     
-      font-family: Roboto;
-      font-weight: 100;
-      font-size: 1.4em;
-    }
-    img{
-      max-width: 100px;
-      max-height: 100px;
-    }
+      :host {
+        font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+        display: block;
+        width: 100%;
+      }
+      .attendeecard{
+        width: 150px;
+        height: 150px;
+        margin:20px;
+      }
+      h3{     
+        font-family: Roboto;
+        font-weight: 100;
+        font-size: 1.4em;
+      }
+      img{
+        max-width: 100px;
+        max-height: 100px;
+      }
     </style>
 
     <meetup-service id="meetupservice" attendees="{{attendees}}"></meetup-service>
@@ -37,26 +37,26 @@
     <div horizontal  layout wrap>
       <template repeat="{{membr in attendees}}">
 
-        <div id="member{{membr.member.id}}" class="attendeecard"  layout center vertical hidden?="{{membr.done}}">
-        <paper-shadow z="3" fit></paper-shadow>
-        <paper-ripple fit></paper-ripple>
-        <div style="height:100%; width:100%; background-color:{{membr.bgcolorval}}" layout center vertical>
-        <img src="{{membr.member.photo.thumb}}"/>
-        <h3>{{membr.member.name}}</h3>
-        </div>
+        <div id="member{{membr.member.id}}" class="attendeecard"  layout center vertical hidden?="{{membr.done}}" >
+          <paper-shadow z="3" fit  hidden?="{{membr.done}}"></paper-shadow>
+          <paper-ripple fit  hidden?="{{membr.done}}"></paper-ripple>
+          <div style="background-color:{{membr.bgcolorval}}" style="background-color:{{membr.bgcolorval}}" layout center vertical fit>
+          <img src="{{membr.member.photo.thumb}}"/>
+          <h3>{{membr.member.name}}</h3>
+          </div>
         </div>
       </template>
     </div>
   </template>
 
   <script>
-
+  // lovley randomizer care of StackOverflow.... somewhere.
   function pastelColors(){
     var r = (Math.round(Math.random()* 127) + 127).toString(16);
     var g = (Math.round(Math.random()* 127) + 127).toString(16);
     var b = (Math.round(Math.random()* 127) + 127).toString(16);
     return '#' + r + g + b;
-}
+  }
 
   Polymer('meetup-list-chooser', {
     created: function() {
@@ -73,11 +73,17 @@
     },
     startJobber: function(){
       this.attendees.forEach(function(mem){
-        mem.bgcolorval = pastelColors();
-        mem.done = mem.done || (Math.random() < .1);
+        mem.bgcolorval = pastelColors();  //recolor the background
+        mem.done = mem.done || (Math.random() < .1);  // 10% chance of getting voted off
       });
 
-      if (this.attendees.filter(function(el){ return el.done != true; }).length > 1){
+      remaining = this.attendees.filter(function(el){ return el.done != true; }).length;
+      // catch case when all are gone :/
+      if(remaining == 0){
+        this.restartJobber();
+        remaining = 2;
+      }
+      if (remaining > 1){
         this.async(function() {
           this.startJobber();
         }, null, 200);
