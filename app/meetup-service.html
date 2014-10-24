@@ -23,6 +23,11 @@
       this.baseAPIurl = this.$.globals.values.meetupAPIurl;
       this.meetupSignedEventURL = this.$.globals.values.meetupSignedEventURL;
     },
+    updateAndGo: function(nameUrl,eventId,key){
+      newUrl= "https://api.meetup.com/" + nameUrl +"/events/" + eventId + "/attendance?key=" + key +"&sign=true&photo-host=public";
+      this.meetupSignedEventURL = newUrl;
+      this.$.jsonp.go();
+    },
     dataLoaded: function() {
       // Make a copy of the loaded data
       this.attendees = this.$.jsonp.response.data; 

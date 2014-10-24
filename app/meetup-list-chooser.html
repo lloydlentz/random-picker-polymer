@@ -4,8 +4,12 @@
 <link rel="import" href="components/paper-ripple/paper-ripple.html">
 <link rel="import" href="components/paper-shadow/paper-shadow.html">
 <link rel="import" href="components/paper-button/paper-button.html" >
+<link rel="import" href="components/paper-input/paper-input.html" >
 <link rel="import" href="components/core-animated-pages/core-animated-pages.html">
 <link rel="import" href="meetup-service.html">
+<link rel="import" href="../app-config.html">
+
+
 <script src="components/web-animations-js/web-animations.js"></script>
 
 <polymer-element name="meetup-list-chooser" >
@@ -15,6 +19,10 @@
         font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
         display: block;
         width: 100%;
+      }
+      .content{
+        padding: 30px;
+        background-color: #fff;
       }
       .attendeecard{
         width: 150px;
@@ -49,44 +57,73 @@
       font-size: 1.5em;
     }
     .body{
-      background-color: lightgrey;
+      background: #f1f1f1;
       height: 250px;
+    }
+    .all{
+      height: 100%;
+      width: 100%;
+      background-image: url('../chevron.png');
+      background-size: contain;
+    }
+    .centered {
+      width: 300px;
+      height: 300px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     </style>
 
+    <app-config id="config"></app-config>
     <meetup-service id="meetupservice" attendees="{{attendees}}"></meetup-service>
 
-    <paper-button raised on-click="{{startJobber}}">Start</paper-button>
-    <paper-button raised on-click="{{restartJobber}}">ReStart</paper-button>
-
     <core-animated-pages id="pages" selected="{{page}}" selectedItem="{{selectedItem}}" transitions="hero-transition" no-transition?="{{noTransition}}">
+      <section id="keysPage" cross-fade>
+        <div vertical  layout wrap class="content">
+           <paper-input floatingLabel label="Devloper Key" id="inputDevKey" value="{{meetupAPIkey}}"></paper-input><br />
+           <paper-input floatingLabel label="Meetup Url (meetup.com/XXX-XX)" id="inputMeetupUrl" value="{{meetupNamedUrl}}"></paper-input><br />
+           <paper-input floatingLabel label="Event ID" id="inputEventId" value="{{meetupEventId}}"></paper-input><br />
+           <paper-button raised on-click="{{readyButton}}">Ready</paper-button>
+        </div>
+      </section>
 
       <section id="page1" cross-fade>
-        <div horizontal  layout wrap>
-          <template repeat="{{membr in attendees}}">
+        <div  class="content">
+          <paper-button raised on-click="{{startJobber}}">Start</paper-button>
+          <paper-button raised on-click="{{restartJobber}}">ReStart</paper-button>
 
-            <div id="member{{membr.member.id}}" class="attendeecard"  layout center vertical hidden?="{{membr.done}}" >
-              <paper-shadow z="3" fit  hidden?="{{membr.done}}"></paper-shadow>
-              <div style="background-color:{{membr.bgcolorval}}" style="background-color:{{membr.bgcolorval}}" layout center vertical fit>
-              <paper-ripple hidden?="{{membr.done}}" fit></paper-ripple>
-              <img src="{{membr.member.photo.thumb}}" class="img" />
-              <h3>{{membr.member.name}}</h3>
+          <div horizontal  layout wrap>
+            <template repeat="{{membr in attendees}}">
+
+              <div id="member{{membr.member.id}}" class="attendeecard"  layout center vertical hidden?="{{membr.done}}" >
+                <paper-shadow z="3" fit  hidden?="{{membr.done}}"></paper-shadow>
+                <div style="background-color:{{membr.bgcolorval}}" style="background-color:{{membr.bgcolorval}}" layout center vertical fit>
+                <paper-ripple hidden?="{{membr.done}}" fit></paper-ripple>
+                <img src="{{membr.member.photo.thumb}}" class="img" />
+                <h3>{{membr.member.name}}</h3>
+                </div>
               </div>
-            </div>
-          </template>
+            </template>
+          </div>
         </div>
       </section>
       <section id="page2">
-        <div class="tall-toolbar colored" style="background-color:orange;" layout vertical hero-id="thing" hero?="{{page === 0 || !noTransition}}">
-        <div style="margin-left:auto; margin-right:auto; width:200px">
-            <img src="{{winnerImg}}" class="imgfinal" />
+        <div class="all colored" layout vertical hero-id="thing" hero?="{{page === 0 || !noTransition}}">
+        <img src="../chevron.png" style="height:100%">
+        <core-icon-button icon="cached" on-tap="{{ back }}"></core-icon-button>
+        <div class="centered"  on-tap={{restartJobber}} >
+        <paper-shadow z="3" fit ></paper-shadow>
+        <div style="margin-left:auto; margin-right:auto; width:200px;overflow: hidden;">
+            <img src="{{winnerImg}}" class="imgfinal"/>
         </div>
-        <div style="margin-left:auto; margin-right:auto; width:200px">
+        <div style="margin-left:auto; margin-right:auto; width:200px" >
           <h1>{{winnerName}}</h1>
         </div>
       </div>
-      <div flex class="body"></div>
+      </div>
       </section>
   </template>
 
@@ -107,15 +144,26 @@
     },
     created: function() {
       this.attendees = [];
-      this.winnerImg = "";
+      this.winnerImg = "favicon.png";
       this.winnerName = "";
+      this.meetupEventId = "";
+      this.meetupAPIkey = "";
+      this.meetupNamedUrl = "";
     },
     ready: function() {
       this.page = 0;
       this.attendees = this.$.meetupservice.attendees;
+      this.winnerImg = "favicon.png";
+      this.meetupEventId = this.$.config.values.meetupEventId;
+      this.meetupAPIkey = this.$.config.values.meetupAPIkey;
+      this.meetupNamedUrl = this.$.config.values.meetupNamedUrl;
+    },
+    readyButton: function(){
+      this.page = 1;
+      this.$.meetupservice.updateAndGo(this.meetupNamedUrl,this.meetupEventId, this.meetupAPIkey);
     },
     restartJobber: function(){
-      this.page = 0;
+      this.page = 1;
       this.attendees.forEach(function(mem){
         mem.bgcolorval = "white";
         mem.done = false;
@@ -137,7 +185,7 @@
         winner = this.attendees.filter(function(el){ return el.done != true; })[0];
         this.winnerImg = winner.member.photo.thumb;
         this.winnerName = winner.member.name;
-        this.page = 1;
+        this.page = 2;
       }
       if (remaining > 1){
         this.async(function() {
