@@ -2,6 +2,9 @@ random-picker-jobber
 ====================
 *Polymer Based Site to pick randomly attendees to a Meetup.com Event.* Inspired by the always impressive Alan Palazzolo [_who now that I type his last name I understand his gh handle_] lovingly crafted[random-picker-thingy](https://github.com/zzolo/random-picker-thingy)
 
+###Demo
+http://dev.cledwyn.com/random-picker-jobber/
+
 ###_TURNS OUT_ 
 Meetup.com has a pretty rockin API.  For this case I used the Attendendance endpoint. http://www.meetup.com/meetup_api/docs/:urlname/events/:id/attendance/#list  
 
