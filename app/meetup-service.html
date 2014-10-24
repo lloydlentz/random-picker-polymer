@@ -13,7 +13,7 @@
     <polymer-jsonp
       auto
       id="jsonp"
-      url="{{baseAPIurl}}{{meetupEventId}}&callback="
+      url="{{meetupSignedEventURL}}&callback="
       on-polymer-response="{{organizersLoaded}}"
     ></polymer-jsonp>
   </template>
@@ -30,6 +30,7 @@
     ready: function() {
       this.meetupEventId = this.$.globals.values.meetupEventId;
       this.baseAPIurl = this.$.globals.values.meetupAPIurl;
+      this.meetupSignedEventURL = this.$.globals.values.meetupSignedEventURL;
       var jsonp = this.$.jsonp;
       jsonp.addEventListener("polymer-response",
         function(e) {
@@ -39,8 +40,7 @@
     },
     organizersLoaded: function() {
       // Make a copy of the loaded data
-
-      this.attendees = this.$.jsonp.response;
+      this.attendees = this.$.jsonp.response.data;
     }
   });
   </script>
