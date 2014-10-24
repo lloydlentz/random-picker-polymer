@@ -32,13 +32,14 @@
     <meetup-service id="meetupservice" attendees="{{attendees}}"></meetup-service>
 
     <paper-button raised on-click="{{startJobber}}">Start</paper-button>
+    <paper-button raised on-click="{{restartJobber}}">ReStart</paper-button>
 
     <div horizontal  layout wrap>
       <template repeat="{{membr in attendees}}">
 
-        <div id="member{{membr.member.id}}" class="attendeecard"  layout center vertical>
-        <paper-ripple fit></paper-ripple>
+        <div id="member{{membr.member.id}}" class="attendeecard"  layout center vertical hidden?="{{membr.done}}">
         <paper-shadow z="3" fit></paper-shadow>
+        <paper-ripple fit></paper-ripple>
         <div style="height:100%; width:100%; background-color:{{membr.bgcolorval}}" layout center vertical>
         <img src="{{membr.member.photo.thumb}}"/>
         <h3>{{membr.member.name}}</h3>
@@ -64,14 +65,23 @@
     ready: function() {
        this.attendees = this.$.meetupservice.attendees;
     },
+    restartJobber: function(){
+      this.attendees.forEach(function(mem){
+        mem.bgcolorval = "white";
+        mem.done = false;
+      });
+    },
     startJobber: function(){
       this.attendees.forEach(function(mem){
         mem.bgcolorval = pastelColors();
+        mem.done = mem.done || (Math.random() < .1);
       });
-      this.async(function() {
-        this.startJobber();
-      }, null, 200);
 
+      if (this.attendees.filter(function(el){ return el.done != true; }).length > 1){
+        this.async(function() {
+          this.startJobber();
+        }, null, 200);
+      }
     }
   });
   </script>
