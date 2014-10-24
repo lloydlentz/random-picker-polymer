@@ -1,4 +1,4 @@
-random-picker-jobber
+random-picker-polymer
 ====================
 *Polymer Based Site to pick randomly attendees to a Meetup.com Event.* Inspired by the always impressive Alan Palazzolo [_who now that I type his last name I understand his gh handle_] lovingly crafted [random-picker-thingy](https://github.com/zzolo/random-picker-thingy)
 
