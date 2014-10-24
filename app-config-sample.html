@@ -8,7 +8,13 @@
         this.super();
         
         //  ENTER YOUR PERSONAL SETTINGS HERE
-        this.values.GloabalSettingsVal1 = "GDG FTW"
+        this.values.GloabalSettingsVal1 = "GDG FTW";
+
+        // MEETUP APIs - http://www.meetup.com/meetup_api/
+        this.values.meetupSignedEventURL="http://api.meetup.com/gdg-tc/events/208284942/attendance?photo-host=public&sig_id=9794564&sig=5d2fd275b30fba8888aad2ba5f0b37e159c4b0da&callback=";
+        this.values.meetupEventId="208284942";
+        this.values.meetupAPIkey="getYerOwnKeyFrom www.meetup.com/meetup_api";  
+
 
         //Variable for the event that you want to call
         //  GOOGLE APIs
@@ -16,10 +22,6 @@
         this.values.baseAPIurl = "http://dev.cledwyn.com/eventscrape.py?eventid=";  //Trying to scrape all attendees of a public Google Event.  DOES NOT WORK (stops at 10)
         this.values.apiKey="getYerOwnKeyFrom console.google.com buddy :) "; // Google + API for your domain
 
-        // MEETUP APIs - http://www.meetup.com/meetup_api/
-        this.values.meetupEventId="208284942"
-        this.values.meetupAPIkey="getYerOwnKeyFrom www.meetup.com/meetup_api";  
-        this.values.meetupSignedEventURL="http://api.meetup.com/gdg-tc/events/208284942/attendance?photo-host=public&sig_id=9794564&sig=5d2fd275b30fba8888aad2ba5f0b37e159c4b0da&callback="
 
       }
     });

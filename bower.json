@@ -22,6 +22,7 @@
     "font-roboto": "Polymer/font-roboto#0.4.2",
     "core-icons": "Polymer/core-icons#0.4.2",
     "polymer-jsonp": "Polymer/polymer-jsonp#~0.3.0",
-    "core-animated-pages":"Polymer/core-animated-pages#0.4.2"
+    "core-animated-pages":"Polymer/core-animated-pages#0.4.2",
+    "polymer-animation":"PolymerLabs/polymer-animation#master"
   }
 }
