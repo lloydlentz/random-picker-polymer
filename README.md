@@ -12,13 +12,11 @@ Meetup.com has a pretty rockin API.  For this case I used the Attendendance endp
 #Install Steps 
  1. clone git repo
  2. `bower update`
- 3. rename `app-config-sample.html` to `app-config.html`
- 4. replace your Meetup.com meetupSignedEventURL
- 5. Done
+ 3. Done
 
 well...
 
-###More Details
+###Notes on makig your own signed URL request.
  1. Fetch yon Meetup KEY - https://secure.meetup.com/meetup_api/key/
  2. to create your own Signed API URL, you need three things 
    1. that API Key 
