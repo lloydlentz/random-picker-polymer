@@ -83,7 +83,8 @@
     <core-animated-pages id="pages" selected="{{page}}" selectedItem="{{selectedItem}}" transitions="hero-transition" no-transition?="{{noTransition}}">
       <section id="keysPage" cross-fade>
         <div vertical  layout wrap class="content">
-           <paper-input floatingLabel label="Devloper Key" id="inputDevKey" value="{{meetupAPIkey}}"></paper-input><br />
+           <paper-input floatingLabel label="Devloper Key" id="inputDevKey" value="{{meetupAPIkey}}"></paper-input>
+           <a href="https://secure.meetup.com/meetup_api/key/" target="_new">https://secure.meetup.com/meetup_api/key/</a><br />
            <paper-input floatingLabel label="Meetup Url (meetup.com/XXX-XX)" id="inputMeetupUrl" value="{{meetupNamedUrl}}"></paper-input><br />
            <paper-input floatingLabel label="Event ID" id="inputEventId" value="{{meetupEventId}}"></paper-input><br />
            <paper-button raised on-click="{{readyButton}}">Ready</paper-button>
@@ -93,7 +94,7 @@
       <section id="page1" cross-fade>
         <div  class="content">
           <paper-button raised on-click="{{startJobber}}">Start</paper-button>
-          <paper-button raised on-click="{{restartJobber}}">ReStart</paper-button>
+          <paper-button raised on-click="{{restartApp}}">ReStart</paper-button>
 
           <div horizontal  layout wrap>
             <template repeat="{{membr in attendees}}">
@@ -140,7 +141,7 @@
     selectedItem: null,
     noTransition: true,
     publish: {
-      page: {value: 0}
+      page: {value: 1}
     },
     created: function() {
       this.attendees = [];
@@ -151,7 +152,7 @@
       this.meetupNamedUrl = "";
     },
     ready: function() {
-      this.page = 0;
+      this.page = 1;
       this.attendees = this.$.meetupservice.attendees;
       this.winnerImg = "favicon.png";
       this.meetupEventId = this.$.config.values.meetupEventId;
@@ -161,6 +162,9 @@
     readyButton: function(){
       this.page = 1;
       this.$.meetupservice.updateAndGo(this.meetupNamedUrl,this.meetupEventId, this.meetupAPIkey);
+    },
+    restartApp: function(){
+      this.page = 0;
     },
     restartJobber: function(){
       this.page = 1;
