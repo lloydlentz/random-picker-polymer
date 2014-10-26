@@ -1,0 +1,260 @@
+<link rel="import" href="components/polymer/polymer.html">
+<link rel="import" href="components/font-roboto/roboto.html">
+<link rel="import" href="components/paper-fab/paper-fab.html">
+<link rel="import" href="components/paper-ripple/paper-ripple.html">
+<link rel="import" href="components/paper-shadow/paper-shadow.html">
+<link rel="import" href="components/paper-button/paper-button.html" >
+<link rel="import" href="components/paper-input/paper-input.html" >
+<link rel="import" href="components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="meetup-service.html">
+<link rel="import" href="../app-config.html">
+
+
+<script src="components/web-animations-js/web-animations.js"></script>
+
+<polymer-element name="meetup-list-chooser" >
+  <template>
+    <style>
+      :host {
+        font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+        display: block;
+        width: 100%;
+      }
+      .content{
+        padding: 30px;
+        background-color: #fff;
+      }
+      .attendeecard{
+        width: 150px;
+        height: 150px;
+        margin:20px;
+      }
+      h1, h2, h3 {font-family: Roboto; font-weight: 100;}
+      h3{     
+        font-family: Roboto;
+        font-weight: 100;
+        font-size: 1.4em;
+      }
+      .img{
+        max-width: 100px;
+        max-height: 100px;
+      }
+      .imgfinal{
+        height:200px;
+        padding:6px;
+        padding-top: 15px;
+        -webkit-border-radius: 4px;
+      }
+      .tall-toolbar {
+      box-sizing: border-box;
+      height: 250px;
+    }
+
+    .tall-toolbar.colored {
+      fill: #fff;
+      color: #fff;
+    }
+
+    .tall-toolbar [flex] {
+      font-size: 1.5em;
+    }
+    .body{
+      background: #f1f1f1;
+      height: 250px;
+    }
+    .all{
+      position: relative;
+      top: 0px;
+      bottom: 0px;
+      right: 0px;
+      left: 0px;
+      background-image: url('../chevron.png');
+    }
+    .colored{
+      background-color: #F2B50F;
+    }
+    .centered {
+      width: 350px;
+      height: 350px;
+      -webkit-border-radius: 30px;
+      padding: 30px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      background-color: white;
+      transform: translate(-50%, -50%);
+    }
+
+    </style>
+
+    <app-config id="config"></app-config>
+    <meetup-service id="meetupservice" attendees="{{attendees}}"></meetup-service>
+
+    <core-animated-pages id="pages" selected="{{page}}" selectedItem="{{selectedItem}}" transitions="hero-transition" no-transition?="{{noTransition}}">
+      <section id="keysPage" cross-fade>
+        <div vertical  layout wrap class="content">
+           <paper-input floatingLabel label="Devloper Key" id="inputDevKey" value="{{meetupAPIkey}}"></paper-input>
+           <a href="https://secure.meetup.com/meetup_api/key/" target="_new">https://secure.meetup.com/meetup_api/key/</a><br />
+           <paper-input floatingLabel label="Meetup Url (meetup.com/XXX-XX)" id="inputMeetupUrl" value="{{meetupNamedUrl}}"></paper-input><br />
+           <paper-input floatingLabel label="Event ID" id="inputEventId" value="{{meetupEventId}}"></paper-input><br />
+           <paper-button raised on-click="{{readyButton}}">Ready</paper-button>
+        </div>
+      </section>
+
+      <section id="page1" cross-fade>
+        <div  class="content">
+          <paper-button raised on-click="{{startJobber}}">Start</paper-button>
+          <paper-button raised on-click="{{restartApp}}">ReStart</paper-button>
+
+          <div horizontal  layout wrap>
+            <template repeat="{{membr in attendees}}">
+
+
+
+              <div id="member{{membr.member.id}}" class="attendeecard" hidden?="{{membr.done}}" >
+
+                <core-animated-pages selected="{{membr.page}}" on-click="transition" transitions="cross-fade-all">
+                  <section on-tap="{{transition}}">
+                    <div layout vertical center center-justified style="background:{{membr.bgcolorval1}};">
+                        <paper-shadow z="3" fit  hidden?="{{membr.done}}"></paper-shadow>
+                        <div layout vertical center center-justified>
+                        <paper-ripple hidden?="{{membr.done}}" fit></paper-ripple>
+                        <img src="{{membr.member.photo.thumb}}" class="img" />
+                        <h3>{{membr.member.name}}</h3>
+                        </div>
+                      </div>
+                  </section>
+                  <section on-tap="{{transition}}">
+                    <div layout vertical center center-justified style="background:{{membr.bgcolorval2}};">
+                      <paper-shadow z="3" fit  hidden?="{{membr.done}}"></paper-shadow>
+                        <div layout vertical center center-justified>
+                        <paper-ripple hidden?="{{membr.done}}" fit></paper-ripple>
+                        <img src="{{membr.member.photo.thumb}}" class="img" />
+                        <h3>{{membr.member.name}}</h3>
+                        </div>
+                    </div>
+                  </section>
+                </core-animated-pages>
+              </div>
+
+
+
+            </template>
+          </div>
+        </div>
+      </section>
+      <section id="page2" class="all" style="position: relative !important;">
+        <div class="all colored" style="height: 2000px;">
+        <core-icon-button icon="cached" on-tap="{{ back }}"></core-icon-button>
+        <div class="centered"  on-tap={{restartJobber}} >
+          <paper-shadow z="3" fit ></paper-shadow>
+          <div style="margin-left:auto; margin-right:auto; width:200px;overflow: hidden;">
+              <img src="{{winnerImg}}" class="imgfinal"/>
+          </div>
+          <div style="margin-left:auto; margin-right:auto; width:200px" >
+            <h1>{{winnerName}}</h1>
+          </div>
+      </div>
+      </div>
+      </section>
+  </template>
+
+  <script>
+  // lovley randomizer care of StackOverflow.... somewhere.
+  function pastelColors(){
+    var r = (Math.round(Math.random()* 127) + 127).toString(16);
+    var g = (Math.round(Math.random()* 127) + 127).toString(16);
+    var b = (Math.round(Math.random()* 127) + 127).toString(16);
+    return '#' + r + g + b;
+  }
+
+  Polymer('meetup-list-chooser', {
+    selectedItem: null,
+    noTransition: true,
+    publish: {
+      page: {value: 1}
+    },
+    created: function() {
+      this.attendees = [];
+      this.winnerImg = "favicon.png";
+      this.winnerName = "";
+      this.meetupEventId = "";
+      this.meetupAPIkey = "";
+      this.meetupNamedUrl = "";
+    },
+    ready: function() {
+      this.page = 1;
+      this.attendees = this.$.meetupservice.attendees;
+      this.winnerImg = "favicon.png";
+      this.meetupEventId = this.$.config.values.meetupEventId;
+      this.meetupAPIkey = this.$.config.values.meetupAPIkey;
+      this.meetupNamedUrl = this.$.config.values.meetupNamedUrl;
+
+      this.attendees.forEach(function(mem){
+        mem.page = 0;
+        mem.bgcolorval1 = pastelColors();  //recolor the background
+        mem.bgcolorval2 = pastelColors();  //recolor the background
+      });
+
+    },
+    readyButton: function(){
+      this.page = 1;
+      this.$.meetupservice.updateAndGo(this.meetupNamedUrl,this.meetupEventId, this.meetupAPIkey);
+    },
+    restartApp: function(){
+      this.page = 0;
+    },
+    restartJobber: function(){
+      this.page = 1;
+      this.attendees.forEach(function(mem){
+        mem.bgcolorval = "white";
+        mem.done = false;
+      });
+    },
+    startJobber: function(){
+      this.attendees.forEach(function(mem){
+        if(!this.recolored){
+          mem.bgcolorval2 = pastelColors();
+          mem.bgcolorval1 = pastelColors();
+        }
+        //mem.bgcolorval = pastelColors();  //recolor the background
+        if (mem.page === 0){
+          mem.page = 1;
+        } else {
+          mem.page = 0;
+        }
+        mem.done = mem.done || (Math.random() < .1);  // 10% chance of getting voted off
+        if (mem.selected == 0){mem.selected = 1;}
+        else {mem.selected = 0; }
+      });
+      if(!this.recolored){this.recolored = true;}
+
+      remaining = this.attendees.filter(function(el){ return el.done != true; }).length;
+      // catch case when all are gone :/
+      if(remaining == 0){
+        this.restartJobber();
+        remaining = 2;
+      }
+      if(remaining == 1){
+        winner = this.attendees.filter(function(el){ return el.done != true; })[0];
+        this.winnerImg = winner.member.photo.thumb;
+        this.winnerName = winner.member.name;
+        this.page = 2;
+      }
+      if (remaining > 1){
+        this.async(function() {
+          this.startJobber();
+        }, null, 200);
+      }
+    },
+
+    transition: function(e) {
+      this.attendees.forEach(function(mem){
+        mem.page = mem.page === 0 ? 1 : 0;
+        mem.bgcolorval1 = pastelColors();  //recolor the background
+        mem.bgcolorval2 = pastelColors();  //recolor the background
+      });
+    }
+  });
+  </script>
+</polymer-element>
