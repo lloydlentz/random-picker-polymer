@@ -2,8 +2,14 @@ random-picker-polymer
 ====================
 *Polymer Based Site to pick randomly attendees to a Meetup.com Event.* Inspired by the always impressive Alan Palazzolo [_who now that I type his last name I understand his gh handle_] lovingly crafted [random-picker-thingy](https://github.com/zzolo/random-picker-thingy)
 
-###Demo
+##Demo
 http://dev.cledwyn.com/random-picker-polymer/
+
+Or on Github Pages http://cledwyn.github.io/random-picker-polymer/
+
+###Usage
+1. Use it for your own meetup.  Click the "Restart" button and fill in the fields.
+2. To restart random picker click on the final member tile and it will restart the picker from the start.
 
 
 ###_TURNS OUT_ 
