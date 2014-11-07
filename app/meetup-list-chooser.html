@@ -63,12 +63,8 @@
       height: 250px;
     }
     .all{
-      position: relative;
-      top: 0px;
-      bottom: 0px;
-      right: 0px;
-      left: 0px;
-      background-image: url('../chevron.png');
+      background-image: url('../chevron-pale.png');
+      background-size: 25%;
     }
     .colored{
       background-color: #F2B50F;
@@ -122,7 +118,7 @@
         </div>
       </section>
       <section id="page2" class="all" style="position: relative !important;">
-        <div class="all colored" style="height: 2000px;">
+        <div class="all" style="height: 2000px;">
         <core-icon-button icon="cached" on-tap="{{ back }}"></core-icon-button>
         <div class="centered"  on-tap={{restartJobber}} >
           <paper-shadow z="3" fit ></paper-shadow>
